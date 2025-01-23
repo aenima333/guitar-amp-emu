@@ -61,6 +61,57 @@
           <label for="tone">Tone</label>
           <input type="range" id="tone" min="0" max="1" step="0.01" value="0.5">
         </div>
+
+        <!-- EQ Controls -->
+        <div class="control-group">
+          <h3>EQ</h3>
+          <div class="control">
+            <label for="bass">Bass</label>
+            <input type="range" id="bass" min="-12" max="12" step="0.1" value="0">
+          </div>
+          <div class="control">
+            <label for="low-mid">Low Mid</label>
+            <input type="range" id="low-mid" min="-12" max="12" step="0.1" value="0">
+          </div>
+          <div class="control">
+            <label for="high-mid">High Mid</label>
+            <input type="range" id="high-mid" min="-12" max="12" step="0.1" value="0">
+          </div>
+          <div class="control">
+            <label for="treble">Treble</label>
+            <input type="range" id="treble" min="-12" max="12" step="0.1" value="0">
+          </div>
+          <div class="control">
+            <label for="presence">Presence</label>
+            <input type="range" id="presence" min="-12" max="12" step="0.1" value="0">
+          </div>
+        </div>
+
+        <!-- Dynamics Controls -->
+        <div class="control-group">
+          <h3>Dynamics</h3>
+          <div class="control">
+            <label for="noise-gate-threshold">Noise Gate</label>
+            <input type="range" id="noise-gate-threshold" min="-60" max="0" step="1" value="-50">
+          </div>
+          <div class="control">
+            <label for="compressor-threshold">Comp Threshold</label>
+            <input type="range" id="compressor-threshold" min="-60" max="0" step="1" value="-24">
+          </div>
+          <div class="control">
+            <label for="compressor-ratio">Comp Ratio</label>
+            <input type="range" id="compressor-ratio" min="1" max="20" step="1" value="4">
+          </div>
+        </div>
+
+        <!-- Reverb Control -->
+        <div class="control-group">
+          <h3>Reverb</h3>
+          <div class="control">
+            <label for="reverb-mix">Mix</label>
+            <input type="range" id="reverb-mix" min="0" max="1" step="0.01" value="0">
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -19,6 +19,50 @@ class GuitarAmp {
     // Create audio nodes
     this.input = this.audioContext.createGain();
     this.gainNode = this.audioContext.createGain();
+    
+    // Create EQ nodes
+    this.bass = this.audioContext.createBiquadFilter();
+    this.lowMid = this.audioContext.createBiquadFilter();
+    this.highMid = this.audioContext.createBiquadFilter();
+    this.treble = this.audioContext.createBiquadFilter();
+    this.presence = this.audioContext.createBiquadFilter();
+    
+    // Configure EQ
+    this.bass.type = 'lowshelf';
+    this.bass.frequency.value = 120;
+    this.lowMid.type = 'peaking';
+    this.lowMid.frequency.value = 400;
+    this.lowMid.Q.value = 1;
+    this.highMid.type = 'peaking';
+    this.highMid.frequency.value = 2000;
+    this.highMid.Q.value = 1;
+    this.treble.type = 'highshelf';
+    this.treble.frequency.value = 5000;
+    this.presence.type = 'highshelf';
+    this.presence.frequency.value = 8000;
+    
+    // Create dynamics processors
+    this.noiseGate = this.audioContext.createDynamicsCompressor();
+    this.noiseGate.threshold.value = -50;
+    this.noiseGate.knee.value = 0;
+    this.noiseGate.ratio.value = 20;
+    this.noiseGate.attack.value = 0.003;
+    this.noiseGate.release.value = 0.250;
+    
+    this.compressor = this.audioContext.createDynamicsCompressor();
+    this.compressor.threshold.value = -24;
+    this.compressor.knee.value = 30;
+    this.compressor.ratio.value = 4;
+    this.compressor.attack.value = 0.010;
+    this.compressor.release.value = 0.250;
+    
+    // Create reverb
+    this.reverb = this.audioContext.createConvolver();
+    this.reverbDry = this.audioContext.createGain();
+    this.reverbWet = this.audioContext.createGain();
+    this.reverbDry.gain.value = 1;
+    this.reverbWet.gain.value = 0;
+    
     this.toneNode = this.audioContext.createBiquadFilter();
     this.output = this.audioContext.createGain();
     this.convolver = this.audioContext.createConvolver();
@@ -42,9 +86,25 @@ class GuitarAmp {
     
     // Connect nodes for clean channel
     this.input.connect(this.inputAnalyzer);
-    this.inputAnalyzer.connect(this.gainNode);
-    this.gainNode.connect(this.toneNode);
-    this.toneNode.connect(this.convolver);
+    this.inputAnalyzer.connect(this.noiseGate);
+    this.noiseGate.connect(this.gainNode);
+    this.gainNode.connect(this.bass);
+    this.bass.connect(this.lowMid);
+    this.lowMid.connect(this.highMid);
+    this.highMid.connect(this.treble);
+    this.treble.connect(this.presence);
+    this.presence.connect(this.compressor);
+    this.compressor.connect(this.toneNode);
+    
+    // Create parallel reverb path
+    this.toneNode.connect(this.reverbDry);
+    this.toneNode.connect(this.reverb);
+    this.reverb.connect(this.reverbWet);
+    
+    // Mix dry and wet signals
+    this.reverbDry.connect(this.convolver);
+    this.reverbWet.connect(this.convolver);
+    
     this.convolver.connect(this.output);
     this.output.connect(this.outputAnalyzer);
     this.outputAnalyzer.connect(this.audioContext.destination);
@@ -206,6 +266,50 @@ class GuitarAmp {
     document.getElementById('tone').addEventListener('input', (e) => {
       resumeAudio();
       this.toneNode.frequency.value = 100 + (parseFloat(e.target.value) * 4900);
+    });
+
+    // EQ Controls
+    document.getElementById('bass').addEventListener('input', (e) => {
+      resumeAudio();
+      this.bass.gain.value = parseFloat(e.target.value);
+    });
+    document.getElementById('low-mid').addEventListener('input', (e) => {
+      resumeAudio();
+      this.lowMid.gain.value = parseFloat(e.target.value);
+    });
+    document.getElementById('high-mid').addEventListener('input', (e) => {
+      resumeAudio();
+      this.highMid.gain.value = parseFloat(e.target.value);
+    });
+    document.getElementById('treble').addEventListener('input', (e) => {
+      resumeAudio();
+      this.treble.gain.value = parseFloat(e.target.value);
+    });
+    document.getElementById('presence').addEventListener('input', (e) => {
+      resumeAudio();
+      this.presence.gain.value = parseFloat(e.target.value);
+    });
+
+    // Dynamics Controls
+    document.getElementById('noise-gate-threshold').addEventListener('input', (e) => {
+      resumeAudio();
+      this.noiseGate.threshold.value = parseFloat(e.target.value);
+    });
+    document.getElementById('compressor-threshold').addEventListener('input', (e) => {
+      resumeAudio();
+      this.compressor.threshold.value = parseFloat(e.target.value);
+    });
+    document.getElementById('compressor-ratio').addEventListener('input', (e) => {
+      resumeAudio();
+      this.compressor.ratio.value = parseFloat(e.target.value);
+    });
+
+    // Reverb Control
+    document.getElementById('reverb-mix').addEventListener('input', (e) => {
+      resumeAudio();
+      const mix = parseFloat(e.target.value);
+      this.reverbDry.gain.value = 1 - mix;
+      this.reverbWet.gain.value = mix;
     });
   }
 
