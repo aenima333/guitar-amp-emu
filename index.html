@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HORIZON BRINGER BETA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="amp-container">
+    <div class="header">
+      <h1>HORIZON BRINGER BETA</h1>
+    </div>
+    
+    <div class="controls">
+      <!-- Channel Selector -->
+      <div class="channel-selector">
+        <button id="clean-channel" class="active">Clean</button>
+        <button id="distorted-channel">Distorted</button>
+      </div>
+
+      <!-- Audio Device Selector -->
+      <div class="device-selector">
+        <label for="audio-device">Input Device:</label>
+        <select id="audio-device"></select>
+      </div>
+
+      <!-- Impulse Response Loader -->
+      <div class="ir-loader">
+        <label for="ir-file">Load Impulse Response:</label>
+        <input type="file" id="ir-file" accept=".wav,.mp3">
+      </div>
+
+      <!-- Level Meters -->
+      <div class="level-meters">
+        <div class="meter input-meter">
+          <div class="meter-label">Input</div>
+          <div class="meter-bar">
+            <div class="meter-fill"></div>
+          </div>
+        </div>
+        <div class="meter output-meter">
+          <div class="meter-label">Output</div>
+          <div class="meter-bar">
+            <div class="meter-fill"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="amp-controls">
+        <div class="control">
+          <label for="gain">Gain</label>
+          <input type="range" id="gain" min="0" max="1" step="0.01" value="0.5">
+        </div>
+        <div class="control">
+          <label for="volume">Volume</label>
+          <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+        </div>
+        <div class="control">
+          <label for="tone">Tone</label>
+          <input type="range" id="tone" min="0" max="1" step="0.01" value="0.5">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
